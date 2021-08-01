@@ -7,7 +7,7 @@ import Footer from './components/footer'
 
 function App() {
   return (<main className="h-100 d-flex flex-column">
-    {/* <Header /> */}
+    <Header />
     <section className="wrapper m-4">
       <Suspense
 						fallback={
