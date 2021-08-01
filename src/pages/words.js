@@ -13,6 +13,7 @@ const Home = () => {
     const [wordCount, setWordCount] = useState(0);
     const [nameSort, setNameSort] = useState('');
     const [prioritySort, setPrioritySort] = useState('');
+    const [modalOpened, setModalOpened] = useState(false);
 
     const formik = useFormik({
         initialValues: {
@@ -63,7 +64,7 @@ const Home = () => {
     }
     const firstWordCap = (str) => {
         return str.replace(str.charAt(0), str.charAt(0).toUpperCase());
-    }    
+    }
 
     return (<>
         <div className="d-flex flex-wrap flex-column flex-md-row align-items-center justify-content-between mb-4">
@@ -76,7 +77,11 @@ const Home = () => {
                 </button>
             </div>
                 <div className="d-block d-md-none">
-                    <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button
+                        onClick={() => {
+                            setModalOpened(true);
+                        }}
+                        type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <i className="fas fa-plus"></i> Add
                     </button>
                 </div>
@@ -100,7 +105,7 @@ const Home = () => {
                             if (key) { nW = bW; }
                             
                             if (val !== "") {
-                                let result = nW.filter(w => (w.word.includes(val) || w.description.includes(val)));                                
+                                let result = nW.filter(w => (w.word.includes(val) || w.description.includes(val) || w.tags.includes(val)));
                                 setWords(result);
                             }
                             else setWords(bW);
@@ -122,7 +127,11 @@ const Home = () => {
                 </div>                
             </div>
             <div className="d-md-block d-none">
-                <button type="button" className="btn  btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button
+                    onClick={() => {
+                            setModalOpened(true);
+                        }}
+                    type="button" className="btn  btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i className="fas fa-plus me-2"></i>Add Word
                 </button>
             </div>
@@ -185,8 +194,7 @@ const Home = () => {
             {
                 words?.map((w, key) => {
                     let color = "";
-                    let btnClr = "danger";
-                    console.log(w.priority);
+                    let btnClr = "danger";                    
                     if (w.priority>0) { color = "bg-info text-white"; btnClr = "dark"; }
                     if (w.priority>1) { color = "bg-warning text-white"; btnClr = "dark"; }
                     if (w.priority>2) { color = "bg-danger text-white"; btnClr = "dark"; }
@@ -258,6 +266,7 @@ const Home = () => {
                             <div className="mb-3">
                                 <label htmlFor="word">Word</label>
                                 <input
+                                    autoFocus={true}
                                     id="word"
                                     name="word"
                                     type="text"
