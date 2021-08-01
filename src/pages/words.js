@@ -108,7 +108,7 @@ const Home = () => {
         </div>
         <div className="row my-5">
             {
-                words.map((w, key) => {
+                words?.map((w, key) => {
                     let color = "";
                     let btnClr = "danger";
                     if (0) { color = "bg-warning text-white"; btnClr = "dark"; }
@@ -141,7 +141,7 @@ const Home = () => {
                                         >{titleCase(w.word)}</h2>
                                         <p>{firstWordCap(w.description)}.</p>
                                         {
-                                            w.tags.map((tag, key) => {
+                                            w.tags?.map((tag, key) => {
                                                 return (<>
                                                     <button
                                                         key={key}
