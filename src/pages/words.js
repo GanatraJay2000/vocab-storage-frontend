@@ -12,8 +12,7 @@ const Home = () => {
     const [deleteAllowed, setDeleteAllowed] = useState(false);
     const [wordCount, setWordCount] = useState(0);
     const [nameSort, setNameSort] = useState('');
-    const [prioritySort, setPrioritySort] = useState('');
-    const [modalOpened, setModalOpened] = useState(false);
+    const [prioritySort, setPrioritySort] = useState('');    
 
     const formik = useFormik({
         initialValues: {
@@ -77,10 +76,7 @@ const Home = () => {
                 </button>
             </div>
                 <div className="d-block d-md-none">
-                    <button
-                        onClick={() => {
-                            setModalOpened(true);
-                        }}
+                    <button                       
                         type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <i className="fas fa-plus"></i> Add
                     </button>
@@ -127,10 +123,7 @@ const Home = () => {
                 </div>                
             </div>
             <div className="d-md-block d-none">
-                <button
-                    onClick={() => {
-                            setModalOpened(true);
-                        }}
+                <button                   
                     type="button" className="btn  btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i className="fas fa-plus me-2"></i>Add Word
                 </button>
