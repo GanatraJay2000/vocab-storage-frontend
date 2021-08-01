@@ -19,11 +19,9 @@ const Home = () => {
             username: 'Jay'
         },
         validationSchema: Yup.object({
-            word: Yup.string()
-                .max(15, 'Must be 15 characters or less')
+            word: Yup.string()               
                 .required('Required'),
-            description: Yup.string()
-                .max(20, 'Must be 20 characters or less')
+            description: Yup.string()                
                 .required('Required'),
             tags: Yup.string(),
         }),
