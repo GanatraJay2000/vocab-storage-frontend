@@ -30,6 +30,7 @@ const EditWord = () => {
             word: currWord.word,
             description: currWord.description,
             tags: currWord.tags?.join(", "),
+            priority: currWord.priority,
             username: 'Jay',
             id: id,
         },
@@ -40,6 +41,7 @@ const EditWord = () => {
             description: Yup.string()                
                 .required('Required'),
             tags: Yup.string(),
+            priority: Yup.number(),
         }),
         onSubmit:  async (values) => {                 
             let updating = await editWord(values);
@@ -52,9 +54,11 @@ const EditWord = () => {
     return (<>
         {
             currWord && (
-        <div className="w-100 mt-2 d-flex justify-content-center align-items-center">
-            <div className="col-md-6 col-12 card border-0 shadow-sm rounded">
-                <div className="px-3 py-4">
+        <div className="w-100 d-flex justify-content-center align-items-center">
+                    <div className="col-md-6 col-12">
+                        <a href="/words" className="text-dark">Back</a>
+                        <div className="card border-0 shadow-sm rounded">
+                <div className="px-3 pt-4">
                     <h2 className="fw-bold text-center">Edit Word</h2>
                     <form onSubmit={formik.handleSubmit} className="p-4">
                             <h2 className="fw-light mb-3">Add Word</h2>
@@ -103,13 +107,29 @@ const EditWord = () => {
                                     <div className="text-danger">{formik.errors.tags}</div>
                                 ) : null}
                             </div>
+                            <div className="mb-3">
+                                <label htmlFor="tags">Priority</label>
+                                <input
+                                    id="priority"
+                                    name="priority"
+                                    type="text"
+                                    className="form-control border-0 shadow-sm"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.priority}
+                                />
+                                {formik.touched.priority && formik.errors.priority ? (
+                                    <div className="text-danger">{formik.errors.priority}</div>
+                                ) : null}
+                            </div>
                             <div className="">
                                 <button data-bs-dismiss="modal" aria-label="Close" type="submit" className="btn btn-primary px-4">Submit</button>
                             </div>
                         </form>
                 </div>
             </div>
-                </div>
+                    </div>
+                    </div>
                 )
         }
     </>);

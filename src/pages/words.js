@@ -9,13 +9,17 @@ const Home = () => {
     const history = useHistory();
     const [words, setWords] = useState([]);
     const [backUpWords, setBackUpWords] = useState([]);
+    const [deleteAllowed, setDeleteAllowed] = useState(false);
     const [wordCount, setWordCount] = useState(0);
+    const [nameSort, setNameSort] = useState('');
+    const [prioritySort, setPrioritySort] = useState('');
 
     const formik = useFormik({
         initialValues: {
             word: '',
             description: '',
             tags: '',
+            priority: 0,
             username: 'Jay'
         },
         validationSchema: Yup.object({
@@ -24,8 +28,10 @@ const Home = () => {
             description: Yup.string()                
                 .required('Required'),
             tags: Yup.string(),
+            priority: Yup.number(),
         }),
-        onSubmit:  async (values) => {                 
+        onSubmit: async (values) => {
+            console.log(values);
             let adding = await addWord(values);
             console.log(adding);
             let nwa = wordCount + 1;
@@ -40,7 +46,16 @@ const Home = () => {
 			setWords(data);
 			setBackUpWords(data);
         })();
-    }, [wordCount]);            
+    }, [wordCount]);  
+    
+    const word_sort = (objs) => {
+        objs.sort((a, b) => (a.word > b.word) ? 1 : ((b.word > a.word) ? -1 : 0))
+        return objs;
+    }
+    const priority_sort = (objs) => {
+        objs.sort((a, b) => (a.priority > b.priority) ? 1 : ((b.priority > a.priority) ? -1 : 0))
+        return objs;
+    }
 
 
     const titleCase = (str) => {
@@ -51,16 +66,22 @@ const Home = () => {
     }    
 
     return (<>
-        <div className="d-flex flex-wrap flex-column flex-md-row align-items-center justify-content-between">
+        <div className="d-flex flex-wrap flex-column flex-md-row align-items-center justify-content-between mb-4">
             <div className="d-flex justify-content-between col-12 col-md-1">
                 <h2 className="m-0">Words</h2>
+                <div className="d-block d-md-none">
+                <button className="btn btn-outline-secondary border-1 border-md-0 shadow-none  ms-md-4 ms-0"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#sortRow">
+                    <i className="fas fa-ellipsis-h    "></i>
+                </button>
+            </div>
                 <div className="d-block d-md-none">
                     <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <i className="fas fa-plus"></i> Add
                     </button>
                 </div>
-            </div>
-            <div className="col w-100 mt-4 mt-md-0 mx-md-5 mx-0">
+            </div>            
+            <div className="col w-100 mt-4 mt-md-0 me-md-5 ms-md-3 mx-0">
                 <div className="input-group border-0">
                     <span className="input-group-text bg-light border-0" id="basic-addon1">
                         <i className="bi bi-search"></i>
@@ -91,6 +112,8 @@ const Home = () => {
                                 let bW = [...backUpWords];
                                 setWords(bW);
                                 document.getElementById('search').value = "";
+                                setPrioritySort("");
+                                setNameSort("");
                             }}
                             className="btn btn-danger m-0">
                         &times;
@@ -103,19 +126,78 @@ const Home = () => {
                     <i className="fas fa-plus me-2"></i>Add Word
                 </button>
             </div>
+            <div className="d-md-block d-none">
+                <button className="btn btn-outline-secondary border-0 shadow-none  ms-4"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#sortRow">
+                    <i className="fas fa-ellipsis-v    "></i>
+                </button>
+            </div>
+        </div>
+        <div className="collapse" id="sortRow">
+            <div className="d-flex flex-wrap justify-content-between justify-content-md-start">
+                <div className="my-2">
+                    <button
+                        onClick={() => {                            
+                            let result = word_sort([...words]);
+                            if (nameSort === "up") {
+                                result.reverse();
+                                setNameSort('down');
+                            }
+                            else if (nameSort === "") setNameSort('up');                            
+                            else setNameSort('up');
+                            
+                            setWords(result);
+                        }}
+                        className="btn btn-outline-secondary">
+                        Sort By Name <i className={`fas fa-caret-${nameSort} ms-2`}></i>
+                    </button>
+                </div>
+                <div className="ms-md-4 my-2">
+                    <button
+                        onClick={() => {                            
+                            let result = priority_sort([...words]);
+                            if (prioritySort === "up") {
+                                result.reverse();
+                                setPrioritySort('down');
+                            }
+                            else if (prioritySort === "") setPrioritySort('up');                            
+                            else setPrioritySort('up');
+                            
+                            setWords(result);
+                        }}
+                        className="btn btn-outline-secondary">
+                        Sort By Priority <i className={`fas fa-caret-${prioritySort} ms-2`}></i>
+                    </button>
+                </div>
+                <div className="ms-md-auto me-md-0 col-12 col-md-2 my-2">
+                    <button
+                        onClick={() => {
+                            var next = !deleteAllowed;
+                            setDeleteAllowed(next);
+                        }}
+                        className="btn btn-secondary w-100">
+                        Allow Delete Toggle
+                    </button>
+                </div>
+            </div>
         </div>
         <div className="row my-5">
             {
                 words?.map((w, key) => {
                     let color = "";
                     let btnClr = "danger";
-                    if (0) { color = "bg-warning text-white"; btnClr = "dark"; }
+                    console.log(w.priority);
+                    if (w.priority>0) { color = "bg-info text-white"; btnClr = "dark"; }
+                    if (w.priority>1) { color = "bg-warning text-white"; btnClr = "dark"; }
+                    if (w.priority>2) { color = "bg-danger text-white"; btnClr = "dark"; }
                     return (
                         <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
                             <div
                                 key={key}
                                 className={`card border-0 shadow-sm overflow-hidden ${color}`}                                
                             >
+                                {
+                                    deleteAllowed && (<>
                                 <button
                                     onClick={async () => {
                                         // eslint-disable-next-line no-restricted-globals
@@ -129,6 +211,8 @@ const Home = () => {
                                     className={`position-absolute top-0 end-0 btn btn-outline-${btnClr} border-0 fs-5 lh-sm shadow-none`} style={{ borderRadius: "0 0.25rem 0 0.25rem" }}>
                                     &times;
                                 </button>
+                                        </>)
+                                }
                                 <div className="py-lg-5 px-lg-4 p-md-4 p-3 py-4 w-100 h-100 d-flex justify-content-center align-items-center">
                                     <div className="text-center">
                                         <h2 className="fw-bold"
@@ -214,6 +298,21 @@ const Home = () => {
                                 />
                                 {formik.touched.tags && formik.errors.tags ? (
                                     <div className="text-danger">{formik.errors.tags}</div>
+                                ) : null}
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="tags">Priority</label>
+                                <input
+                                    id="priority"
+                                    name="priority"
+                                    type="number"
+                                    className="form-control border-0 shadow-sm"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.priority}
+                                />
+                                {formik.touched.priority && formik.errors.priority ? (
+                                    <div className="text-danger">{formik.errors.priority}</div>
                                 ) : null}
                             </div>
                             <div className="">
