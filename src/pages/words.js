@@ -82,7 +82,7 @@ const Home = () => {
     }
 
     return (<>
-        <div className="d-flex flex-wrap flex-column flex-md-row align-items-center justify-content-between mb-4">
+        <div className="d-flex flex-wrap flex-column flex-md-row align-items-center justify-content-between pb-4">
             <div className="d-flex justify-content-between col-12 col-md-1">
                 <h2 className="m-0">Words</h2>
                 <div className="d-block d-md-none">
@@ -206,7 +206,7 @@ const Home = () => {
                 </div>
             </div>
         </div>
-        <div className="row my-5">
+        <div className="row pt-4">
             {
                 words?.map((w, key) => {
                     let color = "";
