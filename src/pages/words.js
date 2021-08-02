@@ -232,9 +232,10 @@ const Home = () => {
                                 }}
                                 style={{ cursor:"pointer" }}
                                         >{titleCase(w.word)}</h2>
-                                        <p>{firstWordCap(w.description)}.</p>
-                                        {
+                                        <p>{firstWordCap(w.description)}.</p>                                       
+                                        {                                            
                                             w.tags?.map((tag, key) => {
+                                                if (tag === "") return (<></>);
                                                 return (<>
                                                     <button
                                                         key={key}
