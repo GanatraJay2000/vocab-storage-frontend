@@ -4,7 +4,6 @@ import { getWords, addWord, deleteWord } from '../util/api';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-
 const Home = () => {
     const history = useHistory();
     const [words, setWords] = useState([]);
@@ -55,6 +54,15 @@ const Home = () => {
 			setBackUpWords(data);
         })();
     }, [wordCount]);  
+    
+    
+    document.addEventListener('keyup', (e) => {
+        if (e.ctrlKey && e.key === 'Enter') {                    
+            var btn = document.querySelector('.addWordModalOpener');
+            btn.click();
+            
+        }
+    });
     
     const word_sort = (objs) => {
         objs.sort((a, b) => (a.word > b.word) ? 1 : ((b.word > a.word) ? -1 : 0))
@@ -134,7 +142,7 @@ const Home = () => {
                     onClick={() => {                        
                         setModalOpened(true)
                     }}    
-                    type="button" className="btn  btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    type="button" className="btn  btn-primary addWordModalOpener" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i className="fas fa-plus me-2"></i>Add Word
                 </button>
             </div>
