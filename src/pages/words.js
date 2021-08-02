@@ -14,6 +14,14 @@ const Home = () => {
     const [nameSort, setNameSort] = useState('');
     const [prioritySort, setPrioritySort] = useState('');    
 
+    const [modalOpened, setModalOpened] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+            document.getElementById("word").focus();
+        }, 200);        
+    }, [modalOpened])
+
     const formik = useFormik({
         initialValues: {
             word: '',
@@ -98,10 +106,9 @@ const Home = () => {
                             let val = e.target.value.toLowerCase();
                             let bW = [...backUpWords];
                             let nW = [...words];
-                            if (key) { nW = bW; }
-                            
+                            if (key) { nW = bW; }                                                    
                             if (val !== "") {
-                                let result = nW.filter(w => (w.word.includes(val) || w.description.includes(val) || w.tags.includes(val)));
+                                let result = nW.filter(w => (w.word.includes(val) || w.description.includes(val) || w.tags.find(a => a.includes(val))));
                                 setWords(result);
                             }
                             else setWords(bW);
@@ -123,7 +130,10 @@ const Home = () => {
                 </div>                
             </div>
             <div className="d-md-block d-none">
-                <button                   
+                <button
+                    onClick={() => {                        
+                        setModalOpened(true)
+                    }}    
                     type="button" className="btn  btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i className="fas fa-plus me-2"></i>Add Word
                 </button>
@@ -230,9 +240,13 @@ const Home = () => {
                                                         key={key}
                                                         onClick={() => {
                                                             document.getElementById('search').value = titleCase(tag);
-                                                            let val = tag;                                                           
-                                                            let nW = [...words];
-                                                            let result = nW.filter(w => (w.tags.includes(val)));                                
+                                                            let val = tag.replace(/^\s+|\s+$/g, "");
+                                                            console.log(val);
+                                                            let nW = [...backUpWords];
+                                                            let result = nW.filter(w => {
+                                                                return w.tags.find(a => a.includes(val));
+                                                            });                                                            
+                                                            console.log(result);
                                                             setWords(result);
                                                         }}
                                                         className=" m-1 btn btn-sm bg-light text-dark border">
@@ -253,7 +267,11 @@ const Home = () => {
             <div className="modal-dialog">
                 <div className="modal-content">                    
                     <div className="modal-body">
-                        <button type="button" className="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>                      
+                        <button
+                            onClick={() => {
+                                        setModalOpened(false);
+                                    }}
+                            type="button" className="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
                         <form onSubmit={formik.handleSubmit} className="p-4">
                             <h2 className="fw-light mb-3">Add Word</h2>
                             <div className="mb-3">
@@ -318,7 +336,11 @@ const Home = () => {
                                 ) : null}
                             </div>
                             <div className="">
-                                <button data-bs-dismiss="modal" aria-label="Close" type="submit" className="btn btn-primary px-4">Submit</button>
+                                <button
+                                    onClick={() => {
+                                        setModalOpened(false);
+                                    }}
+                                    data-bs-dismiss="modal" aria-label="Close" type="submit" className="btn btn-primary px-4">Submit</button>
                             </div>
                         </form>
                     </div>                    
