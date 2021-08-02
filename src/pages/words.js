@@ -154,42 +154,47 @@ const Home = () => {
             </div>
         </div>
         <div className="collapse" id="sortRow">
-            <div className="d-flex flex-wrap justify-content-between justify-content-md-start">
-                <div className="my-2">
-                    <button
-                        onClick={() => {                            
-                            let result = word_sort([...words]);
-                            if (nameSort === "up") {
-                                result.reverse();
-                                setNameSort('down');
-                            }
-                            else if (nameSort === "") setNameSort('up');                            
-                            else setNameSort('up');
-                            
-                            setWords(result);
-                        }}
-                        className="btn btn-outline-secondary">
-                        Sort By Name <i className={`fas fa-caret-${nameSort} ms-2`}></i>
-                    </button>
+            <div className="d-flex flex-wrap justify-content-between align-items-center">
+                <div className="d-flex flex-wrap">
+                    <div className="my-2">
+                        <button
+                            onClick={() => {                            
+                                let result = word_sort([...words]);
+                                if (nameSort === "up") {
+                                    result.reverse();
+                                    setNameSort('down');
+                                }
+                                else if (nameSort === "") setNameSort('up');                            
+                                else setNameSort('up');
+                                
+                                setWords(result);
+                            }}
+                            className="btn btn-outline-secondary">
+                            Sort By Name <i className={`fas fa-caret-${nameSort} ms-2`}></i>
+                        </button>
+                    </div>
+                    <div className="ms-md-4 my-2">
+                        <button
+                            onClick={() => {                            
+                                let result = priority_sort([...words]);
+                                if (prioritySort === "up") {
+                                    result.reverse();
+                                    setPrioritySort('down');
+                                }
+                                else if (prioritySort === "") setPrioritySort('up');                            
+                                else setPrioritySort('up');
+                                
+                                setWords(result);
+                            }}
+                            className="btn btn-outline-secondary">
+                            Sort By Priority <i className={`fas fa-caret-${prioritySort} ms-2`}></i>
+                        </button>
+                    </div>
                 </div>
-                <div className="ms-md-4 my-2">
-                    <button
-                        onClick={() => {                            
-                            let result = priority_sort([...words]);
-                            if (prioritySort === "up") {
-                                result.reverse();
-                                setPrioritySort('down');
-                            }
-                            else if (prioritySort === "") setPrioritySort('up');                            
-                            else setPrioritySort('up');
-                            
-                            setWords(result);
-                        }}
-                        className="btn btn-outline-secondary">
-                        Sort By Priority <i className={`fas fa-caret-${prioritySort} ms-2`}></i>
-                    </button>
+                <div className="">
+                    <button className="btn btn-outline-success border-0 shadow-none px-5">{words.length} Words</button>
                 </div>
-                <div className="ms-md-auto me-md-0 col-12 col-md-2 my-2">
+                <div className=" my-2">
                     <button
                         onClick={() => {
                             var next = !deleteAllowed;
@@ -208,7 +213,9 @@ const Home = () => {
                     let btnClr = "danger";                    
                     if (w.priority>0) { color = "bg-info text-white"; btnClr = "dark"; }
                     if (w.priority>1) { color = "bg-warning text-white"; btnClr = "dark"; }
-                    if (w.priority>2) { color = "bg-danger text-white"; btnClr = "dark"; }
+                    if (w.priority>2) { color = "bg-secondary text-white"; btnClr = "dark"; }
+                    if (w.priority>3) { color = "bg-danger text-white"; btnClr = "dark"; }
+                    if (w.priority>4) { color = "bg-dark text-white"; btnClr = "dark"; }
                     return (
                         <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
                             <div
