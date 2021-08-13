@@ -208,75 +208,79 @@ const Home = () => {
         </div>
         <div className="row pt-4">
             {
-                words?.map((w, key) => {
-                    let color = "";
-                    let btnClr = "danger";                    
-                    if (w.priority>0) { color = "bg-info text-white"; btnClr = "dark"; }
-                    if (w.priority>1) { color = "bg-warning text-white"; btnClr = "dark"; }
-                    if (w.priority>2) { color = "bg-secondary text-white"; btnClr = "dark"; }
-                    if (w.priority>3) { color = "bg-danger text-white"; btnClr = "dark"; }
-                    if (w.priority>4) { color = "bg-dark text-white"; btnClr = "dark"; }
-                    return (
-                        <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                            <div
-                                key={key}
-                                className={`card border-0 shadow-sm overflow-hidden ${color}`}                                
-                            >
-                                {
-                                    deleteAllowed && (<>
-                                <button
-                                    onClick={async () => {
-                                        // eslint-disable-next-line no-restricted-globals
-                                        if (confirm('Are you sure you want to delete the Word: '+ w.word)) {
-                                            let dW = await deleteWord(w._id);
-                                            console.log(dW);
-                                            let nwa = wordCount - 1;
-                                            setWordCount(nwa);
-                                        }
+                words && (<>
+                    {
+                        words?.map((w, key) => {
+                        let color = "";
+                        let btnClr = "danger";                    
+                        if (w.priority>0) { color = "bg-info text-white"; btnClr = "dark"; }
+                        if (w.priority>1) { color = "bg-warning text-white"; btnClr = "dark"; }
+                        if (w.priority>2) { color = "bg-secondary text-white"; btnClr = "dark"; }
+                        if (w.priority>3) { color = "bg-danger text-white"; btnClr = "dark"; }
+                        if (w.priority>4) { color = "bg-dark text-white"; btnClr = "dark"; }
+                        return (
+                            <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                                <div
+                                    key={key}
+                                    className={`card border-0 shadow-sm overflow-hidden ${color}`}                                
+                                >
+                                    {
+                                        deleteAllowed && (<>
+                                    <button
+                                        onClick={async () => {
+                                            // eslint-disable-next-line no-restricted-globals
+                                            if (confirm('Are you sure you want to delete the Word: '+ w.word)) {
+                                                let dW = await deleteWord(w._id);
+                                                console.log(dW);
+                                                let nwa = wordCount - 1;
+                                                setWordCount(nwa);
+                                            }
+                                        }}
+                                        className={`position-absolute top-0 end-0 btn btn-outline-${btnClr} border-0 fs-5 lh-sm shadow-none`} style={{ borderRadius: "0 0.25rem 0 0.25rem" }}>
+                                        &times;
+                                    </button>
+                                            </>)
+                                    }
+                                    <div className="py-lg-5 px-lg-4 p-md-4 p-3 py-4 w-100 h-100 d-flex justify-content-center align-items-center">
+                                        <div className="text-center">
+                                            <h2 className="fw-bold"
+                                            onDoubleClick={() => {
+                                        history.push({ pathname: `/edit-word/${w._id}` });
                                     }}
-                                    className={`position-absolute top-0 end-0 btn btn-outline-${btnClr} border-0 fs-5 lh-sm shadow-none`} style={{ borderRadius: "0 0.25rem 0 0.25rem" }}>
-                                    &times;
-                                </button>
-                                        </>)
-                                }
-                                <div className="py-lg-5 px-lg-4 p-md-4 p-3 py-4 w-100 h-100 d-flex justify-content-center align-items-center">
-                                    <div className="text-center">
-                                        <h2 className="fw-bold"
-                                        onDoubleClick={() => {
-                                    history.push({ pathname: `/edit-word/${w._id}` });
-                                }}
-                                style={{ cursor:"pointer" }}
-                                        >{titleCase(w.word)}</h2>
-                                        <p>{firstWordCap(w.description)}.</p>                                       
-                                        {                                            
-                                            w.tags?.map((tag, key) => {
-                                                if (tag === "") return (<></>);
-                                                return (<>
-                                                    <button
-                                                        key={key}
-                                                        onClick={() => {
-                                                            document.getElementById('search').value = titleCase(tag);
-                                                            let val = tag.replace(/^\s+|\s+$/g, "");
-                                                            console.log(val);
-                                                            let nW = [...backUpWords];
-                                                            let result = nW.filter(w => {
-                                                                return w.tags.find(a => a.includes(val));
-                                                            });                                                            
-                                                            console.log(result);
-                                                            setWords(result);
-                                                        }}
-                                                        className=" m-1 btn btn-sm bg-light text-dark border">
-                                                        {titleCase(tag)}
-                                                    </button>
-                                                </>);
-                                            })
-                                        }
+                                    style={{ cursor:"pointer" }}
+                                            >{titleCase(w.word)}</h2>
+                                            <p>{firstWordCap(w.description)}.</p>                                       
+                                            {                                            
+                                                w.tags?.map((tag, key) => {
+                                                    if (tag === "") return (<></>);
+                                                    return (<>
+                                                        <button
+                                                            key={key}
+                                                            onClick={() => {
+                                                                document.getElementById('search').value = titleCase(tag);
+                                                                let val = tag.replace(/^\s+|\s+$/g, "");
+                                                                console.log(val);
+                                                                let nW = [...backUpWords];
+                                                                let result = nW.filter(w => {
+                                                                    return w.tags.find(a => a.includes(val));
+                                                                });                                                            
+                                                                console.log(result);
+                                                                setWords(result);
+                                                            }}
+                                                            className=" m-1 btn btn-sm bg-light text-dark border">
+                                                            {titleCase(tag)}
+                                                        </button>
+                                                    </>);
+                                                })
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })
+                        );
+                        })
+                    }
+                </>)                
             }
         </div>        
         <div className="modal fade" id="exampleModal"  aria-labelledby="exampleModalLabel" aria-hidden="true">
