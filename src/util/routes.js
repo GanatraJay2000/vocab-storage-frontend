@@ -9,7 +9,7 @@ const routes = [
         component: Home,
         key: 'home',
         exact: true,
-        path: '/'
+        path: '/',        
     },
     {
         component: Words,

@@ -84,7 +84,9 @@ const Home = () => {
     return (<>
         <div className="d-flex flex-wrap flex-column flex-md-row align-items-center justify-content-between pb-4">
             <div className="d-flex justify-content-between col-12 col-md-1">
-                <h2 className="m-0">Words</h2>
+                <a href="/" className="text-dark text-decoration-none">
+                    <h2 className="m-0">Words</h2>
+                </a>
                 <div className="d-block d-md-none">
                 <button className="btn btn-outline-secondary border-1 border-md-0 shadow-none  ms-md-4 ms-0"
                     type="button" data-bs-toggle="collapse" data-bs-target="#sortRow">
